@@ -37,4 +37,8 @@ void main() {
     IO.println("Filename: " + filename);
     IO.println("Bars: " + numBars);
 
+    double[] sound = StdAudio.read(filename);
+
+    StdAudio.play(sound);
+    StdAudio.drain();
 }
