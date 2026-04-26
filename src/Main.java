@@ -8,19 +8,24 @@ void main() {
             JOptionPane.QUESTION_MESSAGE);
 
     if (input == null || input.trim().isEmpty()) {
-        IO.println("No input provided. Exiting.");
+        IO.println("No input provided.");
         return;
     }
 
     String[] parts = input.trim().split("\\s+");
 
     if (parts.length < 2) {
-        JOptionPane.showMessageDialog(null, "Error: You must provide both a filename and the number of bars.");
+        JOptionPane.showMessageDialog(null, "You must provide both a filename and the number of bars.");
         return;
     }
 
     String filename = parts[0];
     int numBars;
+
+    if (filename.contains("..")){
+        JOptionPane.showMessageDialog(null, "Security Error: Directory traversal or absolute paths are not allowed.");
+        return;
+    }
 
     try {
         numBars = Integer.parseInt(parts[1]);
@@ -30,7 +35,7 @@ void main() {
         }
 
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "Error: Number of bars must be a positive integer (1-1000).");
+        JOptionPane.showMessageDialog(null, "Number of bars must be a positive integer (1-1000).");
         return;
     }
 
