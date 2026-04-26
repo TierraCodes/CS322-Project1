@@ -53,7 +53,13 @@ void main() {
     IO.println("Filename: " + filename);
     IO.println("Bars: " + numBars);
 
-    double[] sound = StdAudio.read(filename);
+    double[] sound;
+    try {
+        sound = StdAudio.read(filename);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "File content is not valid .wav data.");
+        return;
+    }
 
     StdDraw.setCanvasSize(1000, 300);
     StdDraw.setXscale(0, numBars);
