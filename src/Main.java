@@ -8,19 +8,35 @@ void main() {
             JOptionPane.QUESTION_MESSAGE);
 
     if (input == null || input.trim().isEmpty()) {
-        IO.println("No input provided. Exiting.");
+        IO.println("No input provided.");
         return;
     }
 
     String[] parts = input.trim().split("\\s+");
 
     if (parts.length < 2) {
-        JOptionPane.showMessageDialog(null, "Error: You must provide both a filename and the number of bars.");
+        JOptionPane.showMessageDialog(null, "You must provide both a filename and the number of bars.");
         return;
     }
 
     String filename = parts[0];
     int numBars;
+
+    if (filename.contains("..")){
+        JOptionPane.showMessageDialog(null, "Security Error: Directory traversal or absolute paths are not allowed.");
+        return;
+    }
+
+    if (!filename.toLowerCase().endsWith(".wav")) {
+        JOptionPane.showMessageDialog(null, "Error: File must be a .wav format.");
+        return;
+    }
+
+    File file = new File(filename);
+    if (!file.exists() || file.isDirectory()) {
+        JOptionPane.showMessageDialog(null, "Error: The file '" + filename + "' does not exist.");
+        return;
+    }
 
     try {
         numBars = Integer.parseInt(parts[1]);
@@ -30,14 +46,27 @@ void main() {
         }
 
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "Error: Number of bars must be a positive integer (1-1000).");
+        JOptionPane.showMessageDialog(null, "Number of bars must be a positive integer (1-1000).");
         return;
     }
 
     IO.println("Filename: " + filename);
     IO.println("Bars: " + numBars);
 
-    double[] sound = StdAudio.read(filename);
+    double[] sound;
+    try {
+        sound = StdAudio.read(filename);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "File content is not valid .wav data.");
+        return;
+    }
+
+    for (double sample : sound) {
+        if (sample < -1.0 || sample > 1.0) {
+            JOptionPane.showMessageDialog(null, "Audio contains illegal amplitude values.");
+            return;
+        }
+    }
 
     StdDraw.setCanvasSize(1000, 300);
     StdDraw.setXscale(0, numBars);
