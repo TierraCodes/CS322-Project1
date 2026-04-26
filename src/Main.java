@@ -61,6 +61,13 @@ void main() {
         return;
     }
 
+    for (double sample : sound) {
+        if (sample < -1.0 || sample > 1.0) {
+            JOptionPane.showMessageDialog(null, "Audio contains illegal amplitude values.");
+            return;
+        }
+    }
+
     StdDraw.setCanvasSize(1000, 300);
     StdDraw.setXscale(0, numBars);
     StdDraw.setYscale(-1, 1);
