@@ -2,8 +2,6 @@ import javax.swing.*;
 
 void main() {
 
-    //Feature A
-
     String input = JOptionPane.showInputDialog(null,
             "Enter [filename] [number of bars]:",
             "Sound Visualizer Input",
@@ -39,12 +37,8 @@ void main() {
     IO.println("Filename: " + filename);
     IO.println("Bars: " + numBars);
 
-    //Feature B
     double[] sound = StdAudio.read(filename);
-    //StdAudio.play(sound);
-    //StdAudio.drain();
 
-    //Feature C
     StdDraw.setCanvasSize(1000, 300);
     StdDraw.setXscale(0, numBars);
     StdDraw.setYscale(-1, 1);
@@ -77,7 +71,4 @@ void main() {
     }
 
     StdAudio.drain();
-
-
-
 }
