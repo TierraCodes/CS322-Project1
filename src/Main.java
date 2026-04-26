@@ -45,5 +45,32 @@ void main() {
     StdAudio.drain();
 
     //Feature C
+    StdDraw.setCanvasSize(1000, 300);
+    StdDraw.setXscale(0, numBars);
+    StdDraw.setYscale(-1, 1);
+
+    int groupSize = sound.length / numBars;
+
+    for (int i = 0; i < numBars; i++) {
+        double max = 0;
+
+        for (int j = 0; j < groupSize; j++) {
+            int currentIndex = i * groupSize + j;
+            double currentSample = Math.abs(sound[currentIndex]);
+
+            if (currentSample > max) {
+                max = currentSample;
+            }
+        }
+        double x = i + 0.5;
+        double y = 0;
+        double halfWidth = 0.4;
+        double halfHeight = max;
+
+        StdDraw.filledRectangle(x, y, halfWidth, halfHeight);
+    }
+
+    StdAudio.play(sound);
+    StdAudio.drain();
 
 }
