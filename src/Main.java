@@ -27,6 +27,11 @@ void main() {
         return;
     }
 
+    if (!filename.toLowerCase().endsWith(".wav")) {
+        JOptionPane.showMessageDialog(null, "Error: File must be a .wav format.");
+        return;
+    }
+
     try {
         numBars = Integer.parseInt(parts[1]);
 
