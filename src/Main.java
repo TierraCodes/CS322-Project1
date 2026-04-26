@@ -32,6 +32,12 @@ void main() {
         return;
     }
 
+    File file = new File(filename);
+    if (!file.exists() || file.isDirectory()) {
+        JOptionPane.showMessageDialog(null, "Error: The file '" + filename + "' does not exist.");
+        return;
+    }
+
     try {
         numBars = Integer.parseInt(parts[1]);
 
