@@ -2,8 +2,6 @@ import javax.swing.*;
 
 void main() {
 
-    //Feature A
-
     String input = JOptionPane.showInputDialog(null,
             "Enter [filename] [number of bars]:",
             "Sound Visualizer Input",
@@ -39,25 +37,24 @@ void main() {
     IO.println("Filename: " + filename);
     IO.println("Bars: " + numBars);
 
-    //Feature B
     double[] sound = StdAudio.read(filename);
-    StdAudio.play(sound);
-    StdAudio.drain();
 
-    //Feature C
     StdDraw.setCanvasSize(1000, 300);
     StdDraw.setXscale(0, numBars);
     StdDraw.setYscale(-1, 1);
+    StdDraw.enableDoubleBuffering();
 
     int groupSize = sound.length / numBars;
 
     for (int i = 0; i < numBars; i++) {
+        int start = i * groupSize;
+        int end = Math.min(start + groupSize, sound.length);
+
+        double[] chunk = java.util.Arrays.copyOfRange(sound, start, end);
         double max = 0;
 
-        for (int j = 0; j < groupSize; j++) {
-            int currentIndex = i * groupSize + j;
-            double currentSample = Math.abs(sound[currentIndex]);
-
+        for (double sample : chunk) {
+            double currentSample = Math.abs(sample);
             if (currentSample > max) {
                 max = currentSample;
             }
@@ -68,9 +65,10 @@ void main() {
         double halfHeight = max;
 
         StdDraw.filledRectangle(x, y, halfWidth, halfHeight);
+
+        StdDraw.show();
+        StdAudio.play(chunk);
     }
 
-    StdAudio.play(sound);
     StdAudio.drain();
-
 }
